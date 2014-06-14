@@ -7,8 +7,6 @@ import logging
 import functools
 
 
-
-
 class Session(object):
     """
     The Session class if the heart of the system.
@@ -671,6 +669,7 @@ if __name__ == '__main__':
     
     
     # HTTP->HTTP
+    # listen on 127.0.0.1:81 , connect to www.google.com:80
     server = ProxyServer("www.google.com",80)
     server.listen(81)
     g_IOManager.add(server)
@@ -679,11 +678,13 @@ if __name__ == '__main__':
                             "keyfile": os.path.join("./", "privatekey.pem") }
 
     # HTTPS->HTTP
+    # listen on (SSL) 127.0.0.1:82 , connect to www.google.com:80
     server = ProxyServer("www.google.com",80, client_ssl_options=client_ssl_options)
     server.listen(82)
     g_IOManager.add(server)
 
     # HTTP->HTTPS
+    # listen on 127.0.0.1:83 , connect to www.google.com:443
     server = ProxyServer("www.google.com",443, server_ssl_options=True)
     server.listen(83)
     g_IOManager.add(server)
@@ -707,6 +708,6 @@ if __name__ == '__main__':
     print("Stopping...")
     g_IOManager.stop(gracefully=True,wait=False)
     print("Stopped...")
-    print("Done.Waiting for stdin...")
+
 
     
