@@ -671,34 +671,49 @@ if __name__ == '__main__':
     
     
     # HTTP->HTTP
+    # On your computer, browse to "http://127.0.0.1:81/" and you'll get http://www.google.com
     server = ProxyServer("www.google.com",80)
     server.listen(81)
     g_IOManager.add(server)
+    print("http://127.0.0.1:81 -> http://www.google.com")
     
-    client_ssl_options={    "certfile": os.path.join("./", "certificate.pem"),
-                            "keyfile": os.path.join("./", "privatekey.pem") }
-
-    # HTTPS->HTTP
-    server = ProxyServer("www.google.com",80, client_ssl_options=client_ssl_options)
-    server.listen(82)
-    g_IOManager.add(server)
-
-    # HTTP->HTTPS
-    server = ProxyServer("www.google.com",443, server_ssl_options=True)
-    server.listen(83)
-    g_IOManager.add(server)
+    bUseSSL=True
+    ssl_certs={     "certfile": os.path.join("./", "certificate.pem"),
+                    "keyfile": os.path.join("./", "privatekey.pem") }
+    
+    if not os.path.isfile(ssl_certs["certfile"]) or \
+        not os.path.isfile(ssl_certs["keyfile"]):
+            print("Warning: SSL is disabled . certificate file(s) not found")
+            bUseSSL=False
 
 
-    # HTTPS->HTTPS
-    server = ProxyServer("www.google.com",443, client_ssl_options=client_ssl_options,server_ssl_options=True)
-    server.listen(84)
-    g_IOManager.add(server)
+    if bUseSSL:
+        # HTTPS->HTTP
+        server = ProxyServer("www.google.com",80, client_ssl_options=ssl_certs)
+        server.listen(82)
+        g_IOManager.add(server)
+        print("https://127.0.0.1:82 -> http://www.google.com")
+
+        # HTTP->HTTPS
+        # "server_ssl_options=True" simply means "connect with SSL"
+        server = ProxyServer("www.google.com",443, server_ssl_options=True)
+        server.listen(83)
+        g_IOManager.add(server)
+        print("http://127.0.0.1:83 -> https://www.google.com:443")
 
 
-    # HTTP->HTTPS , use specific client-certificate
-    server = ProxyServer("10.10.3.88",443, server_ssl_options=client_ssl_options)
-    server.listen(333)
-    g_IOManager.add(server)
+        # HTTPS->HTTPS
+        server = ProxyServer("www.google.com",443, client_ssl_options=ssl_certs,server_ssl_options=True)
+        server.listen(84)
+        g_IOManager.add(server)
+        print("https://127.0.0.1:84 -> https://www.google.com:443")
+
+
+        # HTTP->HTTPS , use specific client-certificate
+        server = ProxyServer("www.google.com",443, server_ssl_options=ssl_certs)
+        server.listen(85)
+        g_IOManager.add(server)
+        print("http://127.0.0.1:85 -> https://www.google.com:443 (Connect with client-certificates)")
 
 
     print("Starting...")
