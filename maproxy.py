@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import tornado.tcpserver
 import signal
 import threading
@@ -60,7 +62,8 @@ class Session(object):
         """
         CLOSED,CONNECTING,CONNECTED=range(3)
     
-    def __init__(self,stream : tornado.iostream.IOStream ,address,proxy):
+    #def __init__(self,stream : tornado.iostream.IOStream ,address,proxy):
+    def __init__(self,stream ,address,proxy):
             # First,validation
             assert isinstance(proxy,ProxyServer) 
             assert isinstance(stream,tornado.iostream.IOStream)
@@ -536,7 +539,8 @@ class IOManager(object):
     def ioloop(self):
         return self._ioloop
 
-    def add(self,server :   tornado.tcpserver.TCPServer ):
+    #def add(self,server :   tornado.tcpserver.TCPServer ):
+    def add(self,server ):
         """
         Add a TCPServer instace (or derivation) 
         """
@@ -551,7 +555,8 @@ class IOManager(object):
         
         
     
-    def start(self,thread:bool=True ):
+    #def start(self,thread:bool=True ):
+    def start(self,thread=True ):
         """
         Start to listen on all servers, and start the IOLoop
         """
