@@ -24,12 +24,12 @@ Well, maybe not that simple, since it supports:
 * Each SSL can be used with SSL certificates. including client-certificates !!
 
 
-Examples::
+Examples:
 ----------
 
     Coming soon. Until then - refer to the demos section (all.py)
 
-Installation::
+Installation:
 --------------
 
     pip install maproxy
