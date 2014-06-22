@@ -25,10 +25,15 @@ Well, maybe not that simple, since it supports:
 
 
 Examples::
+----------
 
-    **TBD:** Add sample-code here
+    Coming soon. Until then - refer to the demos section (all.py)
 
 Installation::
+--------------
 
     pip install maproxy
+
+Source Code: https://github.com/zferentz/maproxy
+
 
