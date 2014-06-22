@@ -25,8 +25,10 @@ Well, maybe not that simple, since it supports:
 
 
 Examples::
-	**TBD:** Add sample-code here
+
+    **TBD:** Add sample-code here
 
 Installation::
-	pip install maproxy
+
+    pip install maproxy
 
