@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(name='maproxy',
 
-    version = "0.0.8",
+    version = "0.0.9",
     author = "Zvika Ferentz",
     author_email = "zvika dot ferentz at gmail",
     description = ("My first attempt to create a simple and awesome "
@@ -18,7 +18,11 @@ setup(name='maproxy',
     keywords = "TCP proxy ssl http https certificates",
     long_description=open('README').read(),
 
+    install_requires=["tornado >= 3.2"],
+
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Topic :: Internet :: Proxy Servers"]
       )
+
+    
