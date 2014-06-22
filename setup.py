@@ -16,7 +16,7 @@ setup(name='maproxy',
     packages=['maproxy'],
 
     keywords = "TCP proxy ssl http https certificates",
-    long_description=open('README').read(),
+    long_description=open('README.rst').read(),
 
     install_requires=["tornado >= 3.2"],
 
