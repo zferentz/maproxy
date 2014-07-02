@@ -88,8 +88,8 @@ Installation:
 
     pip install maproxy
 
-Source Code: https://github.com/zferentz/maproxy
-Contact Me: zvika d-o-t ferentz a-t gmail d,o,t com  (if you can't figure it out - please don't contact me :)  )
+**Source Code**: https://github.com/zferentz/maproxy
 
+**Contact Me**: zvika d-o-t ferentz a-t gmail d,o,t com  *(if you can't figure it out - please don't contact me :)  )*
 
 
