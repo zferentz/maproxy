@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(name='maproxy',
 
-    version = "0.0.11",
+    version = "0.0.12",
     author = "Zvika Ferentz",
     author_email = "zvika dot ferentz at gmail",
     description = ("My first attempt to create a simple and awesome "
