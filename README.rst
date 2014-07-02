@@ -26,8 +26,58 @@ Well, maybe not that simple, since it supports:
 
 Examples:
 ----------
+Let's start with the simplest example - no bells and whistles - a simple TCP proxy:
+    #!/usr/bin/env python
+	import tornado.ioloop
+	import maproxy.proxyserver
+	
+	# HTTP->HTTP: On your computer, browse to "http://127.0.0.1:81/" and you'll get http://www.google.com
+	server = maproxy.proxyserver.ProxyServer("www.google.com",80)
+	server.listen(81)
+	print("http://127.0.0.1:81 -> http://www.google.com")    
+	tornado.ioloop.IOLoop.instance().start()
 
-    Coming soon. Until then - refer to the demos section (all.py)
+We are creating a proxy (reverse proxy, to be more accurate) that listens locally on port 81 (0.0.0.0:81) 
+and redirect all calls to www.google.com (port 80) .
+Note that:
+1. This is NOT an HTTP-proxy , since  it operates in the lower TCP layer . this proxy has nothing to do with HTTP
+2. we are actually listening on all the IP addresses, not only on 127.0.0.1 .
+
+Now, Let's say that you'd like to listen on a "clear" (non-encrypted) connection but connect to an SSL website,
+for example - create a proxy http://127.0.0.1:82 -> https://127.0.0.1:443 , simply update the "server" line:
+	#!/usr/bin/env python
+	import tornado.ioloop
+	import maproxy.proxyserver
+	
+	# HTTP->HTTP: On your computer, browse to "http://127.0.0.1:81/" and you'll get http://www.google.com
+	server = maproxy.proxyserver.ProxyServer("www.google.com",443,server_ssl_options=True)
+	server.listen(82)
+	print("http://127.0.0.1:82 -> https://www.google.com",)    
+	tornado.ioloop.IOLoop.instance().start()
+
+
+Alternatively, you can listen on SSL port and redirect the connection to a clear-text server.
+In order to listen on SSL-port, you need to specify SSL server-certificates as "client_ssl_options":
+	#!/usr/bin/env python
+	import tornado.ioloop
+	import maproxy.proxyserver
+	
+	# HTTPS->HTTP
+	ssl_certs={     "certfile":  "./certificate.pem",
+					"keyfile": "./privatekey.pem" }
+	# "client_ssl_options=ssl_certs" simply means "listen using SSL"
+	server = maproxy.proxyserver.ProxyServer("www.google.com",80,
+											 client_ssl_options=ssl_certs)
+	server.listen(83)
+	print("https://127.0.0.1:83 -> http://www.google.com")
+	tornado.ioloop.IOLoop.instance().start()
+
+In the "demos" section of the source-code, you will also find:
+* how to connect using SSL client-certificate
+* how to inherit the "Session" object (that we internally use)
+  and create a logging-proxy (proxy that logs everything) .
+
+
 
 Installation:
 --------------
