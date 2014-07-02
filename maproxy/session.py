@@ -57,10 +57,11 @@ class Session(object):
         """
         CLOSED,CONNECTING,CONNECTED=range(3)
     
-    #def __init__(self,stream : tornado.iostream.IOStream ,address,proxy):
-    def __init__(self,stream ,address,proxy):
+    def __init__(self):
+        pass
+    #def new_connection(self,stream : tornado.iostream.IOStream ,address,proxy):
+    def new_connection(self,stream ,address,proxy):
             # First,validation
-            
             assert isinstance(proxy,maproxy.proxyserver.ProxyServer) 
             assert isinstance(stream,tornado.iostream.IOStream)
             
@@ -424,3 +425,25 @@ class Session(object):
     @logger(LoggerOptions.LOG_REMOVE_SESSION)
     def remove_session(self):
         self.proxy.remove_session(self)
+
+
+class SessionFactory(object):
+    """
+    This is  the default session-factory. it simply returns a "Session" object
+    """
+    def __init__(self):
+        pass
+        
+    def new(self,*args,**kwargs):
+        """
+        The caller needs a Session objet (constructed with *args,**kwargs).
+        In this implementation we're simply creating a new object. you can enhance and create a pool or add logs..
+        """
+        return Session(*args,**kwargs)
+    def delete(self,session):
+        """
+        Delete a session object
+        """
+        assert( isinstance(session,Session))
+        del session
+        

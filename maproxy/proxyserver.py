@@ -11,7 +11,11 @@ class ProxyServer(tornado.tcpserver.TCPServer):
     TCP Proxy Server .
 
     """
-    def __init__(self,target_server,target_port,client_ssl_options=None,server_ssl_options=None,*args,**kwargs):
+    def __init__(self,
+                 target_server,target_port,
+                 client_ssl_options=None,server_ssl_options=None,
+                 session_factory=maproxy.session.SessionFactory(),
+                 *args,**kwargs):
         """
         ProxyServer initializer functin (constructor) .
         Input Parameters:
@@ -27,6 +31,9 @@ class ProxyServer(tornado.tcpserver.TCPServer):
                                          (e.g.: keyfile and certfile to specify Client-Certificate)
             args,kwargs             : will be passed directly to the Tornado engine
         """
+        assert(session_factory , issubclass(session_factory.__class__,maproxy.session.SessionFactory))
+        self.session_factory=session_factory
+
         
         # First, get the server's address and port . 
         # This is the proxied server that we'll connect to
@@ -64,7 +71,9 @@ class ProxyServer(tornado.tcpserver.TCPServer):
         This is the Session starting point: we initiate a new session and add it to the sessions-list
         """
         assert isinstance(stream,tornado.iostream.IOStream)
-        session=maproxy.session.Session(stream,address,self)
+        #session=maproxy.session.Session(stream,address,self)
+        session=self.session_factory.new()   # Use the factory to create new session
+        session.new_connection(stream,address,self)
         self.SessionsList.append(session)
 
     def remove_session(self,session):
@@ -72,6 +81,7 @@ class ProxyServer(tornado.tcpserver.TCPServer):
         assert ( session.p2s_state==maproxy.session.Session.State.CLOSED )
         assert ( session.c2p_state ==maproxy.session.Session.State.CLOSED )
         self.SessionsList.remove(session)
+        self.session_factory.delete(session)
 
     def get_connections_count(self):
         return len(self.SessionsList)

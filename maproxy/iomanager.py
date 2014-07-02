@@ -89,7 +89,7 @@ class IOManager(object):
                     status+="not-running"
                 if self._stopping.is_set():
                     status+="stopping "
-                ctypes.windll.kernel32.SetConsoleTitleW( "%c %s (%d Connections) "% (self.fan[self.fan_index],status,self.get_connections_count()))
+                ctypes.windll.kernel32.SetConsoleTitleA( "%c %s (%d Connections) "% (self.fan[self.fan_index],status,self.get_connections_count()))
                 self.fan_index=(self.fan_index+1) % 4
                 self._ioloop.add_timeout( time.time()+1 , timeout)
 
