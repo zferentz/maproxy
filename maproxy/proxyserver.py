@@ -17,7 +17,7 @@ class ProxyServer(tornado.tcpserver.TCPServer):
                  session_factory=maproxy.session.SessionFactory(),
                  *args,**kwargs):
         """
-        ProxyServer initializer functin (constructor) .
+        ProxyServer initializer function (constructor) .
         Input Parameters:
             target_server           : the proxied-server IP
             target_port             : the proxied-server port
